@@ -116,17 +116,43 @@ class OpenSlideHandler(FileHandler):
         metadata = {}
 
         wsi_properties = self.file_ptr.properties
-        level_0_magnification = wsi_properties[openslide.PROPERTY_NAME_OBJECTIVE_POWER]
+
+        # TODO bug here, this line produces a key error with tiff files
+        # hacked in a version of toolbox WSIreader for this case without
+        # the warnings and exceptions
+        if openslide.PROPERTY_NAME_OBJECTIVE_POWER in wsi_properties:
+            level_0_magnification = wsi_properties[openslide.PROPERTY_NAME_OBJECTIVE_POWER]
+            mpp = [
+                wsi_properties[openslide.PROPERTY_NAME_MPP_X],
+                wsi_properties[openslide.PROPERTY_NAME_MPP_Y],
+            ]
+            mpp = np.array(mpp)
+        else:
+            level_0_magnification = None
+            mpp = None
+            tiff_res_units = wsi_properties.get("tiff.ResolutionUnit")
+            microns_per_unit = {
+                    "centimeter": 1e4,  # 10k
+                    "inch": 25400,
+                }
+            x_res = float(wsi_properties["tiff.XResolution"])
+            y_res = float(wsi_properties["tiff.YResolution"])
+            mpp_x = 1 / x_res * microns_per_unit[tiff_res_units]
+            mpp_y = 1 / y_res * microns_per_unit[tiff_res_units]
+            mpp = [mpp_x, mpp_y]
+        if level_0_magnification is None:
+            if mpp is not None:
+                mpp = float(np.mean(mpp))
+                common_powers=(1, 1.25, 2, 2.5, 4, 5, 10, 20, 40, 60, 90, 100)
+                op = 10 / float(mpp)
+                distances = [np.abs(op - power) for power in common_powers]
+                closest_match = common_powers[np.argmin(distances)]
+                level_0_magnification = closest_match
+            
         level_0_magnification = float(level_0_magnification)
 
         downsample_level = self.file_ptr.level_downsamples
         magnification_level = [level_0_magnification / lv for lv in downsample_level]
-
-        mpp = [
-            wsi_properties[openslide.PROPERTY_NAME_MPP_X],
-            wsi_properties[openslide.PROPERTY_NAME_MPP_Y],
-        ]
-        mpp = np.array(mpp)
 
         metadata = [
             ("available_mag", magnification_level),  # highest to lowest mag
@@ -202,3 +228,8 @@ def get_file_handler(path, backend):
     else:
         assert False, "Unknown WSI format `%s`" % backend
 
+
+if __name__ == "__main__":
+    # svs_test = get_file_handler("/data/TCGA/Bladder/WSIs/TCGA-4Z-AA7O-01Z-00-DX1.A45C32E8-AA40-4182-8A6F-986DFE56A748.svs", ".svs")
+    test = get_file_handler("/data/UHCW/WSIs/Test/H10-3166_B2H_and_E_1.tiff", ".tiff")
+    print(test)
