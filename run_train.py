@@ -77,6 +77,7 @@ class TrainManager(Config):
         if using on headless machine or not
         """
         self.nr_gpus = 1
+        matplotlib.use('TkAgg') 
         import matplotlib.pyplot as plt
         check_manual_seed(self.seed)
         # TODO: what if each phase want diff annotation ?
