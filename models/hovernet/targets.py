@@ -131,7 +131,7 @@ def prep_sample(data, is_batch=False, **kwargs):
 
     def prep_one_sample(data):
         shape_array = [np.array(v.shape[:2]) for v in data.values()]
-        shape = np.maximum(*shape_array)
+        shape = np.amax(shape_array, axis=0)
         viz_list = []
         viz_list.append(colorize(data["np_map"], 0, 1, shape))
         # map to [0,2] for better visualisation.
