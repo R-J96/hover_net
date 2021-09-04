@@ -36,7 +36,8 @@ def gen_instance_hv_map(ann, crop_shape):
     y_map = np.zeros(orig_ann.shape[:2], dtype=np.float32)
 
     inst_list = list(np.unique(crop_ann))
-    inst_list.remove(0)  # 0 is background
+    if 0 in inst_list:
+        inst_list.remove(0)  # 0 is background
     for inst_id in inst_list:
         inst_map = np.array(fixed_ann == inst_id, np.uint8)
         inst_box = get_bounding_box(inst_map)
@@ -44,10 +45,15 @@ def gen_instance_hv_map(ann, crop_shape):
         # expand the box by 2px
         # Because we first pad the ann at line 207, the bboxes
         # will remain valid after expansion
-        inst_box[0] -= 2
-        inst_box[2] -= 2
-        inst_box[1] += 2
-        inst_box[3] += 2
+        # TODO: BUG here, if inst_box is 256x256 this will make bounding box
+        # bigger than patch itself causing errors inst_map will be 2x2 full of 0s
+        # and then centre of mass
+        # will return nans causing it to crash
+        if 0 not in inst_box and 1 not in inst_box and 256 not in inst_box and 255 not in inst_box:
+            inst_box[0] -= 2
+            inst_box[2] -= 2
+            inst_box[1] += 2
+            inst_box[3] += 2
 
         inst_map = inst_map[inst_box[0] : inst_box[1], inst_box[2] : inst_box[3]]
 

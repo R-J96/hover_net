@@ -58,7 +58,8 @@ def visualize_instances_map(
     overlay = np.copy((input_image).astype(np.uint8))
 
     inst_list = list(np.unique(inst_map))  # get list of instances
-    inst_list.remove(0)  # remove background
+    if 0 in inst_list:
+        inst_list.remove(0)  # remove background
 
     inst_rng_colors = random_colors(len(inst_list))
     inst_rng_colors = np.array(inst_rng_colors) * 255
