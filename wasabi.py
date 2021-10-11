@@ -3,21 +3,21 @@ import numpy as np
 
 # colour codes
 # neoplastic - black,
-# inflammatory - yellow,
-# conective - pink
-# necrotic - green
-# epithelial - red
-# background - blue
+# inflammatory - red,
+# conective - green
+# necrotic - blue
+# epithelial - yellow
+# background - orange
 
 viz_info = {
-    "line_width": 3,
+    "line_width": 1,
     "type_colour": {
         0: [0, 0, 0, 0],
-        1: [255, 255, 0, 0],
-        2: [255, 0, 153, 0],
-        3: [0, 255, 0, 0],
-        4: [255, 0, 0, 0],
-        5: [0, 255, 255, 0],
+        1: [255, 0, 0, 0],
+        2: [0, 255, 0, 0],
+        3: [0, 0, 255, 0],
+        4: [255, 255, 0, 0],
+        5: [255, 165, 0, 0],
     },
     "type_name": {
         0: "Neoplastic",
@@ -105,14 +105,11 @@ def to_wasabi(save_path, inst_info_dict, viz_info, mode, scale_factor, annotator
 
 
 wasabi_path = (
-    "/data/Test/hoverNetUHCWTest/json/H10-3166_B2H_and_E_1_first5k_wasabi.json"
-)
-json_to_convert_str = (
-    "/data/Test/hoverNetUHCWTest/json/H10-3166_B2H_and_E_1_first5000.json"
+    "/data/UHCW/LowerGU_HoVer-Net_annotations_withMasks/wasabi_json/H10-17754_A1H_and_E_1_wasabi.json"
 )
 
 with open(
-    "/data/Test/hoverNetUHCWTest/json/H10-3166_B2H_and_E_1_first5000.json", "r"
+    "/data/UHCW/LowerGU_HoVer-Net_annotations_withMasks/json/H10-17754_A1H_and_E_1.json", "r"
 ) as myfile:
     data = myfile.read()
 
@@ -126,5 +123,5 @@ to_wasabi(
     viz_info,
     "centroid",
     read_scale_factor,
-    "panNuke_hovernet_5k",
+    "hoverNet_lowerGU",
 )

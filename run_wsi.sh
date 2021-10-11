@@ -8,8 +8,7 @@ python run_infer.py \
 --nr_inference_workers=8 \
 --nr_post_proc_workers=16 \
 wsi \
---input_dir=/data/UHCW/WSIs/UHCW_Bladder \
---output_dir=/data/UHCW/LowerGU_HoVer-Net_annotations/ \
---input_mask_dir= \
+--input_dir=/data/TCGA/Bladder/WSIs/ \
+--output_dir=/data/TCGA/Bladder/LowerGU_HoVer-Net_annotations_withMasks/ \
+--input_mask_dir=/data/TCGA/Bladder/WSI_masks/ \
 --save_thumb \
---save_mask

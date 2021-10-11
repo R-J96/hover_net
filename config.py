@@ -45,11 +45,11 @@ class Config(object):
                 raise Exception("If using `original` mode, input shape must be [256,256] and output shape must be [164,164]")
 
         # self.dataset_name = "consep" # extracts dataset info from dataset.py
-        self.log_dir = "logs/" # where checkpoints will be saved
+        self.log_dir = "lowerGU/imageNetPreTrained_2/" # where checkpoints will be saved
 
         # paths to training and validation patches
         self.train_dir_list = [
-            "/data/PanNuke_HoVer-Net_format_lowerGU/Fold1/"
+            "/data/PanNuke_HoVer-Net_format_lowerGU/All_Data/"
         ]
         self.valid_dir_list = [
             "/data/PanNuke_HoVer-Net_format_lowerGU/Fold2/"
