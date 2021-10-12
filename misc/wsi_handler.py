@@ -269,7 +269,7 @@ class JP2000Handler(FileHandler):
             read_mag=read_mag, read_mpp=read_mpp
         )
 
-        read_size = self.wsi_metadata.level_dimensions[read_lv]
+        read_size = self.wsi_metadata['level_dimensions'][read_lv]
 
         wsi_img = self.wsi_reader.read_region((0, 0), read_lv, read_size)
         wsi_img = np.array(wsi_img)[..., :3]  # remove alpha channel
