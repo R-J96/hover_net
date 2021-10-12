@@ -244,7 +244,7 @@ class JP2000Handler(FileHandler):
             ("base_mag", mag_level[0]),
             ("vendor", wsi_metadata["vendor"]),
             ("mpp  ", wsi_metadata["mpp"][0]),
-            ("base_shape", wsi_metadata["slide_dimensions"]),
+            ("base_shape", np.array(wsi_metadata["slide_dimensions"])),
         ]
         return OrderedDict(metadata)
 
