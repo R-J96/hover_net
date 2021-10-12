@@ -251,8 +251,8 @@ class JP2000Handler(FileHandler):
     def read_region(self, coords, size):
         if self.image_ptr is None:
             # convert coord from read lv to lv zero
-            lv_0_shape = np.array(self.wsi_metadata.level_dimensions[0])
-            lv_r_shape = np.array(self.wsi_metadata.level_dimensions[self.read_lv])
+            lv_0_shape = np.array(self.wsi_metadata['level_dimensions'][0])
+            lv_r_shape = np.array(self.wsi_metadata['level_dimensions'][self.read_lv])
             up_sample = (lv_0_shape / lv_r_shape)[0]
             new_coord = [0, 0]
             new_coord[0] = int(coords[0] * up_sample)
