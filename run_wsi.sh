@@ -9,6 +9,6 @@ python run_infer.py \
 --nr_post_proc_workers=16 \
 wsi \
 --input_dir=/mnt/available_datasets/Bladder/UHCW/WSI/ \
---output_dir=/data/TCGA/Bladder/LowerGU_HoVer-Net_annotations_withMasks/ \
+--output_dir=/mnt/user-temp/rob-tia/projects/Bladder-experiments/lowergu_hovernet_annotations/ \
 --input_mask_dir=/mnt/user-temp/rob-tia/data/UHCW_bladder/masks/ \
 --save_thumb \
