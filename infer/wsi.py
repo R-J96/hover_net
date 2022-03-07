@@ -15,6 +15,7 @@ import re
 import shutil
 import sys
 import time
+import pandas as pd
 from functools import reduce
 from importlib import import_module
 
@@ -728,8 +729,12 @@ class InferManager(base.InferManager):
         if self.save_mask:
             if not os.path.exists(self.output_dir + "/mask/"):
                 rm_n_mkdir(self.output_dir + "/mask/")
-
-        wsi_path_list = glob.glob(self.input_dir + "/*")
+                
+        if self.input_dir.endswith('.tsv'):
+            df = pd.read_csv(self.input_dir, sep="\t", names=['names'])
+            wsi_path_list = list(df.names.values)
+        else:
+            wsi_path_list = glob.glob(self.input_dir + "/*")
         wsi_path_list.sort()  # ensure ordering
         for wsi_path in wsi_path_list[:]:
             wsi_base_name = pathlib.Path(wsi_path).stem
